@@ -33,7 +33,7 @@ export function AddTodoList(prop) {
             <input type="radio" name="priority" onChange = {e => updatePro("high")}/> High &nbsp; 
             <input type="radio" name="priority" onChange = {e => updatePro("modrate")}/> Modrate &nbsp; 
             <input type="radio" name="priority" onChange = {e => updatePro("low")}/> Low &nbsp;
-            <input type="submit" style={style.button} hidden />
+            <input type="submit" style={style.button}  />
         </form>
     )
 }
@@ -62,14 +62,14 @@ const style = {
     },
     button:{
         color: "white",
-        "padding": "10px 7px",
+        "padding": "4px 3px",
         "background": "blue",
-        fontSize:20,
+        fontSize:11,
         fontWeight:600,
         borderRadius: 5,
         float:"right",
-        marginTop:"-27px",
-        cursor:"pointer"
+        cursor:"pointer",
+        zIndex:1000
     },
     span:{
         float:"right",

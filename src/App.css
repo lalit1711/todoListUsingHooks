@@ -23,13 +23,13 @@
   color: #61dafb;
 }
 .high{
-  background: red
+  background: #e74c3c
 }
 .low{
-  background: green;
+  background: #00b16a;
 }
 .modrate{
-  background: #61dafb;
+  background: #89c4f4;
 }
 
 @keyframes App-logo-spin {
