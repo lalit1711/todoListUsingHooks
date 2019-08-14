@@ -32,36 +32,41 @@ export function Conference(props){
         updatelist(_newTask);
         _localStorageService.setTasksInLocal(_newTask);
         updateOldTask(_localStorageService.getCurrentTask(_newTask, "<"))
-        _newTask = _localStorageService.getCurrentTask(_newTask, ">");
-        
-        updateCurrentTask(_newTask)
+        updateCurrentTask(_localStorageService.getCurrentTask(_newTask, ">"))
     }
 
 
     return(
-        <div className="row">
-            <div className = "col-md-4">
-                <h4>Todo-list <li style={style.liBorder}>UpComing Task =>  {_currentTask.length ? _currentTask[0].text : "No tasks"   }  {_currentTask.length ? _currentTask[0].time : "--:--" }</li></h4>
-                <ul style={style.ulBorder}>
-                {
-                    _todoList.map((value,i) => {
-                        return(
-                            <li key={i} style={style.liBorder} className={value.priorty}>{i+1}. &nbsp; {value.text} @ {value.time}
-                                <span style={style.span} title="delete task" onClick= {v => {deleteTask(value.text)}}>x</span>
-                            </li>
-                        )
-                    })
-                }
-                <li style={style.liBorder}><AddTodoList addTask={updateTask} /></li>
-                </ul>
-            </div>
-            <div className="col-md-4">
-            <h1>Not Complete Tasks <li style={style.liBorder}>Upcoming</li></h1>
-                <UpcomingTask data={_currentTask} />
-            </div>
-            <div className="col-md-4">
-            <h1>Previous Tasks <li style={style.liBorder}>Old Task</li></h1>
-                <OldTask data={_oldTask}/>
+        <div >
+        <h4 className="justify-center">Todo-list</h4>
+            <div className="row">
+                <div className = "col-md-4">
+                    <li style={style.liBorder}><AddTodoList addTask={updateTask} /></li>
+                </div>
+            </div> 
+            <div className="row">
+                <div className = "col-md-4">
+                <h4>All Tasks</h4>
+                    
+                    {
+                        _todoList.map((value,i) => {
+                            return(
+                                <li key={i} style={style.liBorder} className={value.priorty}>{i+1}. &nbsp; {value.text} @ {value.time}
+                                    <span style={style.span} title="delete task" onClick= {v => {deleteTask(value.text)}}>x</span>
+                                </li>
+                            )
+                        })
+                    }
+                    
+                </div>
+                <div className="col-md-4">
+                    <h4>Not Complete Tasks</h4>
+                    <UpcomingTask data={_currentTask} />
+                </div>
+                <div className="col-md-4">
+                    <h4>Previous Tasks </h4>
+                    <OldTask data={_oldTask}/>
+                </div>
             </div>
         </div>
     )

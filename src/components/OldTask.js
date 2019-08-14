@@ -1,14 +1,12 @@
-import React, {useState} from 'react';
-import LocalStorageService from '../services/local.service';
-const _localStorageService = new LocalStorageService();
+import React from 'react';
 export function OldTask(prop) {
+    const _data = prop.data.reverse()
     return(
         <div>
             {
-                prop.data.map((v,i) => {
+                _data.map((v,i) => {
                     return(
                         <li key={i} style={style.liBorder} className={v.priorty}>{i+1}. &nbsp; {v.text} @ {v.time}
-                            <span style={style.span} title="delete task" >x</span>
                         </li>
                     )
                 })
