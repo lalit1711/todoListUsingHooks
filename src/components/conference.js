@@ -43,6 +43,14 @@ export function Conference(props){
                 <div className = "col-md-4">
                     <li style={style.liBorder}><AddTodoList addTask={updateTask} /></li>
                 </div>
+                <div className = "col-md-4">
+                <h4>Current task</h4>
+                    <li className="current" style={style.liBorder}><h4>{_oldTask.length?_oldTask[_oldTask.length - 1].text: "No task"} </h4> End on {_currentTask.length?_currentTask[0].time:""}</li>
+                </div>
+                <div className = "col-md-4">
+                <h4>Next task</h4>
+                    <li className="next" style={style.liBorder}><h4>{_currentTask.length?_currentTask[0].text:"No task"} </h4>starts from {_currentTask.length?_currentTask[0].time:""}</li>
+                </div>
             </div> 
             <div className="row">
                 <div className = "col-md-4">

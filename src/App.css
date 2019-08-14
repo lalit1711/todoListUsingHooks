@@ -31,6 +31,13 @@
 .modrate{
   background: #89c4f4;
 }
+.current{
+  background: #67809f;
+}
+.next{
+  background: #2e3131;
+  color: white;
+}
 
 @keyframes App-logo-spin {
   from {
