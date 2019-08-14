@@ -14,11 +14,14 @@ export class LocalStorageService{
             
     }
 
-    getCurrentTask = (_data: any): any => {
-        return _data.filter((a: any) => 
+    getCurrentTask = (_data: any, _task: string): any => {
+        return _data.filter((a: any) =>
+            _task == ">" ? 
             Date.parse("01/01/2011 "+a.time) > Date.parse("01/01/2011 "+new Date().toLocaleTimeString('en-US', { hour12: false, 
                 hour: "numeric", 
-                minute: "numeric"}))
+                minute: "numeric"})) : Date.parse("01/01/2011 "+a.time) < Date.parse("01/01/2011 "+new Date().toLocaleTimeString('en-US', { hour12: false, 
+                    hour: "numeric", 
+                    minute: "numeric"}))
         )
     }
 }
