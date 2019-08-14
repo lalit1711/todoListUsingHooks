@@ -1,29 +1,40 @@
-import React ,{ useState } from 'react';
+import React ,{ useState, useEffect } from 'react';
 import '../App.css';
-const task = [
-    {text: "makking breakfast", priorty:"high", time:"10:00"},
-    {text: "getting ready for office", priorty:"low", time:"11:00"},
-    {text: "Writing Code", priorty:"modrate", time:"9:00"}
-]
+import AddTodoList from './AddTask'
+import LocalStorageService from '../services/local.service';
+const _localStorageService = new LocalStorageService();
+
 export function Conference(props){
-    const [_todoList, updatelist] = useState([...task].sort((a,b)=>{
-        return Date.parse("01/01/2011"+" "+a.time) - Date.parse("01/01/2011"+" "+b.time)
+    const [_todoList, updatelist] = useState(_localStorageService.getTasksFromLocal().sort((a,b)=>{
+        return Date.parse("01/01/2011 "+a.time) - Date.parse("01/01/2011 "+b.time)
     }));
+    const [_currentTask, updateCurrentTask] = useState(_localStorageService.getCurrentTask(_todoList))
     const updateTask = (value, pro, tim) => {
         const _newTask  = [..._todoList, {text:value, priorty:pro, time:tim}].sort((a,b)=>{
-            return Date.parse("01/01/2011"+" "+a.time) - Date.parse("01/01/2011"+" "+b.time)
+            return Date.parse("01/01/2011 "+a.time) - Date.parse("01/01/2011 "+b.time)
         });
-        updatelist(_newTask);
+        UpdateTasks(_newTask);
     }
+
+
     const deleteTask = (task) => {
         const _newTask = [..._todoList].filter(
             v => v.text !== task
         );
-        updatelist(_newTask);
+        UpdateTasks(_newTask);
     }
+
+    const UpdateTasks = (_newTask) => {
+        updatelist(_newTask);
+        _localStorageService.setTasksInLocal(_newTask);
+        _newTask = _localStorageService.getCurrentTask(_newTask)
+        updateCurrentTask(_newTask)
+    }
+
+
     return(
         <div>
-            <h1>Todo-list</h1>
+            <h1>Todo-list <li style={style.liBorder}>UpComing Task =>  {_currentTask.length ? _currentTask[0].text : "No tasks"   }  {_currentTask.length ? _currentTask[0].time : "--:--" }</li></h1>
             <ul style={style.ulBorder}>
             {
                 _todoList.map((value,i) => {
@@ -40,47 +51,16 @@ export function Conference(props){
     )
 }
 
-function AddTodoList(prop) {
-    const [_addTask, addTask] = useState("");
-    const [_addTime, addTime] = useState("");
-    const [_prior, updatePro] = useState("high");
-    const handleSubmit =(e) => {
-        e.preventDefault();
-        if(_addTask.trim() && _addTime.trim()){
-            prop.addTask(_addTask, _prior, _addTime.toString())
-            addTask("");
-            addTime("");
-        }
-    }
-    return(
-        <form onSubmit={handleSubmit} method="get" action="#">
-            <input type="text" value={_addTask} style={style.inputBox} placeholder="Enter the task..." onChange = {
-                e => {
-                    addTask(e.target.value)
-                }
-            }/> &nbsp;
-            <label>Enter time</label>
-            &nbsp;
-            <input type="time" value={_addTime} style={style.inputBox}  onChange = {
-                e => {
-                    addTime(e.target.value)
-                }
-            }/>
-            <br/>
-            <input type="radio" name="priority" onChange = {e => updatePro("high")}/> High &nbsp; 
-            <input type="radio" name="priority" onChange = {e => updatePro("modrate")}/> Modrate &nbsp; 
-            <input type="radio" name="priority" onChange = {e => updatePro("low")}/> Low &nbsp;
-            <input type="submit" style={style.button} hidden />
-        </form>
-    )
-}
+
 
 const style = {
     liBorder:{
         border: "1px solid black",
         width: "80%",
         padding: "10px 7px",
-        margin: "10px 7px"
+        margin: "10px 7px",
+        borderRadius:5,
+        listStyleType: "none"
     },
     ulBorder:{
         border: "1px solid black",
@@ -110,8 +90,9 @@ const style = {
     span:{
         float:"right",
         border:"1px solid black",
-        padding: "0px 2px",
-        cursor:"pointer"
+        padding: "1px 3px",
+        cursor:"pointer",
+        borderRadius:50
     },
     high:{
         background:"red"
