@@ -11,8 +11,9 @@ export function Conference(props){
     const [_todoList, updatelist] = useState(_localStorageService.getTasksFromLocal().sort((a,b)=>{
         return Date.parse("01/01/2011 "+a.time) - Date.parse("01/01/2011 "+b.time)
     }));
-    const [_currentTask, updateCurrentTask] = useState(_localStorageService.getCurrentTask(_todoList,">"))
+    const [_currentTask, updateCurrentTask] = useState(_localStorageService.getCurrentTask(_todoList,">"));
     const [_oldTask, updateOldTask] = useState(_localStorageService.getCurrentTask(_todoList,"<"))
+
     const updateTask = (value, pro, tim) => {
         const _newTask  = [..._todoList, {text:value, priorty:pro, time:tim}].sort((a,b)=>{
             return Date.parse("01/01/2011 "+a.time) - Date.parse("01/01/2011 "+b.time)
@@ -35,37 +36,44 @@ export function Conference(props){
         updateCurrentTask(_localStorageService.getCurrentTask(_newTask, ">"))
     }
 
-
     return(
         <div >
-        <h4 className="justify-center">Todo-list</h4>
+            <h4 className="justify-center">Todo-list</h4>
             <div className="row">
                 <div className = "col-md-4">
-                    <li style={style.liBorder}><AddTodoList addTask={updateTask} /></li>
+                    <li style={style.liBorder}>
+                        <AddTodoList addTask={updateTask} />
+                    </li>
                 </div>
                 <div className = "col-md-4">
-                <h4>Current task</h4>
-                    <li className="current" style={style.liBorder}><h4>{_oldTask.length?_oldTask[_oldTask.length - 1].text: "No task"} </h4> End on {_currentTask.length?_currentTask[0].time:""}</li>
+                    <h4>Current task</h4>
+                    <li className="current" style={style.liBorder}>
+                        <h4>{_oldTask.length?_oldTask[_oldTask.length - 1].text: "No task"} </h4>
+                        End on {_currentTask.length?_currentTask[0].time:
+                        _todoList.length? _todoList[0].time : ""}
+                    </li>
                 </div>
                 <div className = "col-md-4">
-                <h4>Next task</h4>
-                    <li className="next" style={style.liBorder}><h4>{_currentTask.length?_currentTask[0].text:"No task"} </h4>starts from {_currentTask.length?_currentTask[0].time:""}</li>
+                    <h4>Next task</h4>
+                    <li className="next" style={style.liBorder}>
+                        <h4>{_currentTask.length?_currentTask[0].text:_todoList.length?_todoList[0].text:""} </h4>
+                        starts from {_currentTask.length?_currentTask[0].time:
+                        _todoList.length?_todoList[0].time:""}
+                    </li>
                 </div>
-            </div> 
+            </div>
             <div className="row">
                 <div className = "col-md-4">
-                <h4>All Tasks</h4>
-                    
+                    <h4>All Tasks</h4>
                     {
-                        _todoList.map((value,i) => {
-                            return(
-                                <li key={i} style={style.liBorder} className={value.priorty}>{i+1}. &nbsp; {value.text} @ {value.time}
-                                    <span style={style.span} title="delete task" onClick= {v => {deleteTask(value.text)}}>x</span>
-                                </li>
-                            )
-                        })
+                    _todoList.map((value,i) => {
+                    return(
+                    <li key={i} style={style.liBorder} className={value.priorty}>{i+1}. &nbsp; {value.text} @ {value.time}
+                        <span style={style.span} title="delete task" onClick= {v => {deleteTask(value.text)}}>x</span>
+                    </li>
+                    )
+                    })
                     }
-                    
                 </div>
                 <div className="col-md-4">
                     <h4>Not Complete Tasks</h4>
